@@ -1,0 +1,4 @@
+#Sun Mar 29 14:10:55 ICT 2020
+base.0=D\:\\Semen Indonesia Beton\\Clone\\flutter-ecommerce\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

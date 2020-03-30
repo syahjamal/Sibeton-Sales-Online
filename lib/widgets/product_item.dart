@@ -36,35 +36,34 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<Product>(
-            builder: (BuildContext context, Product product, Widget child) {
-              return IconButton(
-                icon: Icon(product.isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border),
-                color: Theme.of(context).accentColor,
-                onPressed: () {
-                  product.toggleFavouriteStatus(authData.token, authData.userId);
-                },
-              );
-            },
-          ),
+          // leading: Consumer<Product>(
+          //   builder: (BuildContext context, Product product, Widget child) {
+          //     return IconButton(
+          //       icon: Icon(product.isFavorite
+          //           ? Icons.favorite
+          //           : Icons.favorite_border),
+          //       color: Theme.of(context).accentColor,
+          //       onPressed: () {
+          //         product.toggleFavouriteStatus(authData.token, authData.userId);
+          //       },
+          //     );
+          //   },
+          // ),
           title: Text(
             product.title,
-            textAlign: TextAlign.center,
           ),
           trailing: IconButton(
             icon: Icon(
-              Icons.shopping_cart,
+              Icons.shopping_basket,
             ),
             onPressed: () {
-              cart.addItem(product.id, product.title, product.price);
+              cart.addItem(product.id, product.title, product.price.toDouble());
               Scaffold.of(context).hideCurrentSnackBar();
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Item added to cart !"),
+                  content: Text(" Item added to cart ! "),
                   action: SnackBarAction(
-                      label: "UNDO",
+                      label: " UNDO ",
                       onPressed: () {
                         cart.removeSingleItem(product.id);
                       }),

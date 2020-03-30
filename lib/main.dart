@@ -45,10 +45,10 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, Auth auth, Widget child) {
           return MaterialApp(
               debugShowCheckedModeBanner: false,
-              title: 'E-Store',
+              title: ' Sibeton ',
               theme: ThemeData(
-                primarySwatch: Colors.green,
-                accentColor: Colors.redAccent,
+                primaryColor: Colors.red[200],
+                accentColor: Colors.green[200],
                 fontFamily: 'Lato',
                 pageTransitionsTheme: PageTransitionsTheme(builders: {
                   TargetPlatform.android: CustomPageTransitionsBuilder(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/providers/orders.dart' as ord;
 import 'package:intl/intl.dart';
 import 'dart:math';
+import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 
 class OrderItem extends StatefulWidget {
   final ord.OrderItem order;
@@ -17,6 +18,16 @@ class _OrderItemState extends State<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
+    FlutterMoneyFormatter fmf = FlutterMoneyFormatter(
+        amount: widget.order.amount,
+        settings: MoneyFormatterSettings(
+            symbol: 'Rp',
+            thousandSeparator: '.',
+            decimalSeparator: ' ',
+            symbolAndNumberSeparator: ' ',
+            fractionDigits: 0,
+            compactFormatType: CompactFormatType.short));
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       height:
@@ -26,7 +37,7 @@ class _OrderItemState extends State<OrderItem> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: Text("\$${widget.order.amount}"),
+              title: Text("${fmf.output.symbolOnLeft}"),
               subtitle: Text(
                   DateFormat("dd MM yyyy hh:mm").format(widget.order.dateTime)),
               trailing: IconButton(
@@ -59,7 +70,7 @@ class _OrderItemState extends State<OrderItem> {
                                   fontSize: 18.0, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "\$${prod.price} x ${prod.quanity}",
+                              "\Rp ${prod.price} x ${prod.quanity}",
                               style: TextStyle(
                                   fontSize: 15.0, color: Colors.grey[700]),
                             ),

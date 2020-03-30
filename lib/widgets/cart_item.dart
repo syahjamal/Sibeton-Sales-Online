@@ -19,6 +19,8 @@ class CartItem extends StatelessWidget {
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
       },
+
+      
       confirmDismiss: (direction) {
         return showDialog(
             context: context,
@@ -56,11 +58,11 @@ class CartItem extends StatelessWidget {
             leading: CircleAvatar(
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: FittedBox(child: Text("\$${price}")),
+                child: FittedBox(child: Text("${price}")),
               ),
             ),
             title: Text(title),
-            subtitle: Text("Total : \$${price * quantity}"),
+            subtitle: Text("Total : \Rp ${price * quantity}"),
             trailing: Text("x ${quantity}"),
           ),
         ),

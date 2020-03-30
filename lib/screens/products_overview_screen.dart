@@ -56,9 +56,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: Text(' Sibeton Online Sales '),
         actions: <Widget>[
-          PopupMenuButton(
+          /*PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 if (FilterOptions.Favourites == selectedValue) {
@@ -71,17 +71,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             icon: Icon(Icons.more_vert),
             itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem(
+                /*PopupMenuItem(
                   child: Text("Only Favourites"),
                   value: FilterOptions.Favourites,
-                ),
+                ),*/
                 PopupMenuItem(
                   child: Text("Select All"),
                   value: FilterOptions.All,
                 ),
               ];
             },
-          ),
+          ),*/
           Consumer<Cart>(
             builder: (BuildContext context, Cart cart, Widget widget) {
               return Badge(

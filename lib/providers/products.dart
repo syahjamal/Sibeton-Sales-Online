@@ -53,7 +53,8 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url =
-        "${YOUR_FIREBASE_DATABASE_PATH}/products.json?auth=$authToken";
+        "${"https://sibeton-sales-online.firebaseio.com"}/products.json?auth=$authToken";
+
 
     try {
       var response = await http.post(url,
@@ -82,10 +83,10 @@ class Products with ChangeNotifier {
     var url;
     if (filterByUser) {
       url =
-          '${YOUR_FIREBASE_DATABASE_PATH}/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+          '${"https://sibeton-sales-online.firebaseio.com"}/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     } else {
       url =
-          '${YOUR_FIREBASE_DATABASE_PATH}/products.json?auth=$authToken';
+          '${"https://sibeton-sales-online.firebaseio.com"}/products.json?auth=$authToken';
     }
 
     try {
@@ -97,7 +98,7 @@ class Products with ChangeNotifier {
       }
 
       final favUrl =
-          "${YOUR_FIREBASE_DATABASE_PATH}/userFavourites/$userId.json?auth=$authToken";
+          "${"https://sibeton-sales-online.firebaseio.com"}/userFavourites/$userId.json?auth=$authToken";
       final favResponse = await http.get(favUrl);
       final favData = json.decode(favResponse.body);
 
@@ -123,7 +124,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url =
-          "${YOUR_FIREBASE_DATABASE_PATH}/products/$id.json?auth=$authToken";
+          "${"https://sibeton-sales-online.firebaseio.com"}/products/$id.json?auth=$authToken";
       await http.patch(url,
           body: json.encode({
             "title": newProduct.title,

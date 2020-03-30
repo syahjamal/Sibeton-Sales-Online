@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CartItem {
-  final String Id;
+  final String id;
   final String title;
   final int quanity;
   final double price;
 
   CartItem(
-      {@required this.Id,
+      {@required this.id,
       @required this.title,
       @required this.quanity,
       @required this.price});
@@ -40,7 +40,7 @@ class Cart with ChangeNotifier {
       _items.update(
           productId,
           (existingCardItem) => CartItem(
-              Id: existingCardItem.Id,
+              id: existingCardItem.id,
               title: existingCardItem.title,
               price: existingCardItem.price,
               quanity: existingCardItem.quanity + 1));
@@ -48,7 +48,7 @@ class Cart with ChangeNotifier {
       _items.putIfAbsent(
           productId,
           () => CartItem(
-              Id: DateTime.now().toString(),
+              id: DateTime.now().toString(),
               title: title,
               price: price,
               quanity: 1));
@@ -72,7 +72,7 @@ class Cart with ChangeNotifier {
       _items.update(
           productId,
           (existingCardItem) => CartItem(
-              Id: existingCardItem.Id,
+              id: existingCardItem.id,
               title: existingCardItem.title,
               price: existingCardItem.price,
               quanity: existingCardItem.quanity - 1));

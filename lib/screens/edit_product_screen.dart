@@ -243,10 +243,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         if (value.isEmpty) {
                           return "Price is required!";
                         }
-                        if (double.tryParse(value) == null) {
+                        if (int.tryParse(value) == null) {
                           return "Please enter valid price!";
                         }
-                        if (double.parse(value) <= 0) {
+                        if (int.parse(value) <= 0) {
                           return "Please enter price greater than 0!";
                         }
                       },
@@ -255,7 +255,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           id: _editedProduct.id,
                           isFavorite: _editedProduct.isFavorite,
                           title: _editedProduct.title,
-                          price: double.parse(value),
+                          price: int.parse(value),
                           imageUrl: _editedProduct.imageUrl,
                           description: _editedProduct.description,
                         );

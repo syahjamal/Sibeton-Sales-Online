@@ -60,18 +60,18 @@ class Auth with ChangeNotifier {
     } catch (error) {
       throw error;
     }
-  }*/
+  }
 
-  /*Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String email, String password) async {
     const url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${YOUR_KEY}";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${'AIzaSyD42-MPdWKS-pgb3EgWuuEE6wQnKPEN69g'}";
 
     return _authenticate(email, password, url);
   }
 
   Future<void> login(String email, String password) async {
     const url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${YOUR_KEY}";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${'AIzaSyD42-MPdWKS-pgb3EgWuuEE6wQnKPEN69g'}";
 
     return _authenticate(email, password, url);
   }*/
@@ -91,7 +91,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     final url =
-        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=${YOUR_WEB_API_KEY}';
+        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=${'AIzaSyD42-MPdWKS-pgb3EgWuuEE6wQnKPEN69g'}';
     try {
       final response = await http.post(
         url,

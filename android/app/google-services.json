@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "665051924357",
+    "firebase_url": "https://sibeton-sales-online.firebaseio.com",
+    "project_id": "sibeton-sales-online",
+    "storage_bucket": "sibeton-sales-online.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665051924357:android:14d38ab30924bdd54ce6ec",
+        "android_client_info": {
+          "package_name": "com.semenindonesiabeton.flutter_ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665051924357-9rlibuen66o7r8rafuq669n8to314j3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.semenindonesiabeton.flutter_ecommerce",
+            "certificate_hash": "58c81968f7210a4c145af5a3ff17531e957e8c1f"
+          }
+        },
+        {
+          "client_id": "665051924357-j2q16s51440g8fhop2cqe694mp9emdke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0vJsMyt0v7cRXwngNFdyJWQze_MYcqQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "665051924357-j2q16s51440g8fhop2cqe694mp9emdke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

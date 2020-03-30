@@ -30,7 +30,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
-    final url = "${YOUR_FIREBASE_DATABASE_PATH}/$userId.json?auth=$authToken";
+    final url = "${"https://sibeton-sales-online.firebaseio.com"}/$userId.json?auth=$authToken";
     final timeStamp = DateTime.now();
 
     var response = await http.post(url,
@@ -39,7 +39,7 @@ class Orders with ChangeNotifier {
           "dateTime": timeStamp.toIso8601String(),
           "products": cartProducts
               .map((cartProduct) => {
-                    "id": cartProduct.Id,
+                    "id": cartProduct.id,
                     "title": cartProduct.title,
                     "quanity": cartProduct.quanity,
                     "price": cartProduct.price,
@@ -59,7 +59,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> fetchAndSetOrders() async {
-    final url = "${YOUR_FIREBASE_DATABASE_PATH}/orders/$userId.json?auth=$authToken";
+    final url = "${"https://sibeton-sales-online.firebaseio.com"}/orders/$userId.json?auth=$authToken";
     final response = await http.get(url);
     print(json.decode(response.body));
 
@@ -76,7 +76,7 @@ class Orders with ChangeNotifier {
         dateTime: DateTime.parse(orderData["dateTime"]),
         products: (orderData["products"] as List<dynamic>)
             .map((item) => CartItem(
-                Id: item["id"],
+                id: item["id"],
                 title: item["title"],
                 quanity: item["quanity"],
                 price: item["price"]))

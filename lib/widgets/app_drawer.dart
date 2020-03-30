@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/helpers/custom_route.dart';
 import 'package:flutter_ecommerce/providers/auth.dart';
 import 'package:flutter_ecommerce/screens/orders_screen.dart';
-import 'package:flutter_ecommerce/screens/user_products_screen.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -12,7 +11,7 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         children: <Widget>[
           AppBar(
-            title: Text("Hello Friend!"),
+            title: Text("Selamat Datang"),
             automaticallyImplyLeading: false,
           ),
           Divider(),
@@ -34,15 +33,15 @@ class AppDrawer extends StatelessWidget {
                   CustomRoute(builder: (context) => OrdersScreen()));
             },
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("Manage Products"),
-            onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(UserProductsScreen.routeName);
-            },
-          ),
+          // Divider(),
+          // ListTile(
+          //   leading: Icon(Icons.edit),
+          //   title: Text("Manage Products"),
+          //   onTap: () {
+          //     Navigator.of(context)
+          //         .pushReplacementNamed(UserProductsScreen.routeName);
+          //   },
+          // ),
           Divider(),
           ListTile(
             leading: Icon(Icons.exit_to_app),

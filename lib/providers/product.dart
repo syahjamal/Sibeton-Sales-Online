@@ -8,7 +8,7 @@ class Product with ChangeNotifier {
   final String id;
   final String title;
   final String description;
-  final double price;
+  final int price;
   final String imageUrl;
   bool isFavorite;
 
@@ -27,12 +27,12 @@ class Product with ChangeNotifier {
     isFavorite = !isFavorite;
     notifyListeners();
 
-    final url = "${YOUR_FIREBASE_DATABASE_PATH}/userFavourites/$userId/$id.json?auth=$authToken";
+    final url = "${"https://sibeton-sales-online.firebaseio.com"}/userFavourites/$userId/$id.json?auth=$authToken";
     try {
-      /*final response = await http.patch(url,
-          body: json.encode({
-            "isFavorite": isFavorite,
-          }));*/
+      // final response = await http.patch(url,
+      //     body: json.encode({
+      //       "isFavorite": isFavorite,
+      //     }));
 
       final response = await http.put(url,
           body: json.encode({
