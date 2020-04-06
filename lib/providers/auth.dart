@@ -6,6 +6,10 @@ import 'package:flutter_ecommerce/constants.dart';
 import 'package:flutter_ecommerce/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_ecommerce/utils/preferences.dart';
+
+PreferenceUtil appData = PreferenceUtil();
 
 class Auth with ChangeNotifier {
   String _token;
@@ -103,10 +107,12 @@ class Auth with ChangeNotifier {
           },
         ),
       );
+      // mengambil response
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
         throw HttpException(responseData['error']['message']);
       }
+      // response dari firebase auth
       _token = responseData['idToken'];
       _userId = responseData['localId'];
       _expiryDate = DateTime.now().add(
@@ -116,6 +122,29 @@ class Auth with ChangeNotifier {
           ),
         ),
       );
+      // ketika user baru signup
+      if (urlSegment == 'accounts:signUp') {
+        // create user ketika baru mendaftar
+        await Firestore.instance.collection("users").document(_userId).setData({
+          "user_id": _userId,
+          "email": email,
+          "password": password,
+        }).whenComplete(() {
+          // simpan shared prefences
+          appData.saveVariable("user_id", _userId);
+          appData.saveVariable("email", email);
+        });
+      } else {
+        // simpan shared prefences ketika sudah pernah buat
+        await Firestore.instance
+            .collection("users")
+            .document(_userId)
+            .get()
+            .then((onValue) {
+          appData.saveVariable("user_id", onValue.data['user_id']);
+          appData.saveVariable("email", onValue.data['email']);
+        });
+      }
       _autoLogout();
       notifyListeners();
       final prefs = await SharedPreferences.getInstance();

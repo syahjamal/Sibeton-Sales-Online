@@ -1,7 +1,13 @@
 # This is a generated file; do not edit or check into version control.
-flutter_money_formatter=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\flutter_money_formatter-0.8.3\\
-flutter_plugin_android_lifecycle=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-1.0.6\\
-image_picker=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\image_picker-0.6.4\\
-path_provider=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider-1.6.5\\
-path_provider_macos=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\path_provider_macos-0.0.4\\
-shared_preferences=C:\\Users\\Sulaiman Syah Jamal\\AppData\\Roaming\\Pub\\Cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.3+4\\
+cloud_firestore=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\cloud_firestore-0.12.11\\
+firebase_core=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core-0.4.4+3\\
+firebase_core_web=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_core_web-0.1.1+2\\
+firebase_storage=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\firebase_storage-3.1.5\\
+flutter_money_formatter=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_money_formatter-0.8.3\\
+flutter_plugin_android_lifecycle=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\flutter_plugin_android_lifecycle-1.0.6\\
+image_picker=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\image_picker-0.6.4\\
+path_provider=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider-1.6.5\\
+path_provider_macos=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\path_provider_macos-0.0.4\\
+shared_preferences=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences-0.5.6+3\\
+shared_preferences_macos=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_macos-0.0.1+6\\
+shared_preferences_web=D:\\aplikasi\\flutter\\.pub-cache\\hosted\\pub.dartlang.org\\shared_preferences_web-0.1.2+4\\

@@ -4,8 +4,13 @@ import 'package:flutter_ecommerce/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ecommerce/widgets/order_item.dart';
 
+
 class OrdersScreen extends StatelessWidget {
   static const routeName = "/orders";
+
+  void initState() {
+   print("hi");
+  }
 
 //  var _isLoading = false;
 
