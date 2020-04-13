@@ -26,15 +26,28 @@ dependencies:
   provider: ^3.1.0
   intl: ^0.15.8
   http: ^0.12.0+2
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.6 # Untuk penyimpanan lokal 
   flutter_money_formatter: ^0.8.3
   image_picker: ^0.6.3
   path_provider: ^1.6.0
+  cloud_firestore: ^0.12.9
+  firebase_storage: ^3.1.1 # foto dan penyimpanan
+  
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.4
+  flutter_launcher_name: ^0.0.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/sibeton.png"
+
+flutter_launcher_name:
+  name: "SiBeton"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

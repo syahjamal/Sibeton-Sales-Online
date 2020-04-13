@@ -6,6 +6,9 @@ import 'package:flutter_ecommerce/widgets/app_drawer.dart';
 import 'package:flutter_ecommerce/widgets/badge.dart';
 import 'package:flutter_ecommerce/widgets/products_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_ecommerce/utils/preferences.dart';
+
+PreferenceUtil appData = new PreferenceUtil();
 
 enum FilterOptions { Favourites, All }
 
@@ -18,6 +21,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavourites = false;
   var _isInit = true;
   var _isLoading = false;
+  String email = '';
+  String userId = '';
 
   @override
   void initState() {
@@ -33,18 +38,30 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 //    });
 
     super.initState();
+    appData.getVariable("email").then((result) {
+      setState(() {
+        email = result;
+        print(email);
+      });
+    });
+    appData.getVariable("user_id").then((result) {
+      setState(() {
+        userId = result;
+        print(userId);
+      });
+    });
   }
 
   @override
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
-         _isLoading = true;
+        _isLoading = true;
       });
 
       Provider.of<Products>(context).fetchAndSetProducts().then((_) {
         setState(() {
-           _isLoading = false;
+          _isLoading = false;
         });
       });
     }
