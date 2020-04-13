@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "D:\\Semen Indonesia Beton\\Clone\\flutter-ecommerce\\build\\shared_preferences\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-fr\\values-fr.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Sulaiman Syah Jamal\\.gradle\\caches\\transforms-1\\files-1.1\\core-1.0.0.aar\\a75905b687cc0d9704cffda7f9786c5c\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "D:\\Semen Indonesia Beton\\Clone\\flutter-ecommerce\\build\\shared_preferences\\intermediates\\res\\merged\\release\\values-fr\\values-fr.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Sulaiman Syah Jamal\\.gradle\\caches\\transforms-1\\files-1.1\\core-1.0.0.aar\\a75905b687cc0d9704cffda7f9786c5c\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}
