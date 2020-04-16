@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/providers/cart.dart';
 import 'package:flutter_ecommerce/providers/products.dart';
@@ -5,8 +6,10 @@ import 'package:flutter_ecommerce/screens/cart_screen.dart';
 import 'package:flutter_ecommerce/widgets/app_drawer.dart';
 import 'package:flutter_ecommerce/widgets/badge.dart';
 import 'package:flutter_ecommerce/widgets/products_grid.dart';
+import 'package:flutter_ecommerce/screens/detail_product.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ecommerce/utils/preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 PreferenceUtil appData = new PreferenceUtil();
 
@@ -18,6 +21,7 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
+  final format = new NumberFormat("#,###");
   var _showOnlyFavourites = false;
   var _isInit = true;
   var _isLoading = false;
@@ -69,57 +73,129 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     super.didChangeDependencies();
   }
 
+  _buildListItem(BuildContext context, DocumentSnapshot document) {
+    return InkWell(
+      onTap: () {
+        // Lanjut ke halman detail produk
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DetailProduk(
+              productId: document.documentID,
+            ),
+          ),
+        );
+      },
+      child: Card(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: 170,
+              width: MediaQuery.of(context).size.width,
+              child: FadeInImage(
+                fit: BoxFit.cover,
+                placeholder:
+                    AssetImage("assets/images/product-placeholder.png"),
+                image: NetworkImage(
+                  document['foto'][0],
+                ),
+              ),
+            ),
+            // nama products
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, bottom: 2.0, top: 2.0),
+              child: Text(
+                document['nama'].toString(),
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+            // harga barang
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, bottom: 2.0),
+              child: Text(
+                "Rp." + format.format(document['harga']).toString(),
+                style: TextStyle(
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(' Sibeton Online Sales '),
         actions: <Widget>[
-          /*PopupMenuButton(
-            onSelected: (FilterOptions selectedValue) {
-              setState(() {
-                if (FilterOptions.Favourites == selectedValue) {
-                  _showOnlyFavourites = true;
-                } else {
-                  _showOnlyFavourites = false;
-                }
-              });
-            },
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (BuildContext context) {
-              return [
-                /*PopupMenuItem(
-                  child: Text("Only Favourites"),
-                  value: FilterOptions.Favourites,
-                ),*/
-                PopupMenuItem(
-                  child: Text("Select All"),
-                  value: FilterOptions.All,
+          Row(
+            children: <Widget>[
+              Container(
+                child: Consumer<Cart>(
+                  builder: (BuildContext context, Cart cart, Widget widget) {
+                    return Badge(
+                      child: widget,
+                      value: cart.itemCount.toString(),
+                    );
+                  },
+                  child: IconButton(
+                      icon: Icon(Icons.shopping_cart),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(CartScreen.routeName);
+                      }),
                 ),
-              ];
-            },
-          ),*/
-          Consumer<Cart>(
-            builder: (BuildContext context, Cart cart, Widget widget) {
-              return Badge(
-                child: widget,
-                value: cart.itemCount.toString(),
-              );
-            },
-            child: IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(CartScreen.routeName);
-                }),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 0),
+                child: Consumer<Cart>(
+                  builder: (BuildContext context, Cart cart, Widget widget) {
+                    return Badge(
+                      child: widget,
+                      value: cart.itemCount.toString(),
+                    );
+                  },
+                  child: IconButton(
+                      icon: Icon(Icons.history),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(CartScreen.routeName);
+                      }),
+                ),
+              ),
+            ],
           ),
         ],
       ),
-      drawer: AppDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ProductsGrid(_showOnlyFavourites),
+      body: StreamBuilder(
+          stream: Firestore.instance.collection('products').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                  child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red)));
+            } else {
+              return GridView.builder(
+                padding: const EdgeInsets.all(10.0),
+                itemCount: snapshot.data.documents.length,
+                itemBuilder: (context, index) =>
+                    _buildListItem(context, snapshot.data.documents[index]),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.8,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+              );
+            }
+          }),
     );
   }
 }
