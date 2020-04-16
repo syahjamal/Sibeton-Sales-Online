@@ -10,6 +10,7 @@ import 'package:flutter_ecommerce/screens/edit_product_screen.dart';
 import 'package:flutter_ecommerce/screens/orders_screen.dart';
 import 'package:flutter_ecommerce/screens/splash_screen.dart';
 import 'package:flutter_ecommerce/screens/user_products_screen.dart';
+import 'package:flutter_ecommerce/screens/detail_product.dart';
 import 'package:provider/provider.dart';
 
 import './screens/products_overview_screen.dart';
