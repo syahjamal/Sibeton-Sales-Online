@@ -96,7 +96,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               child: FadeInImage(
                 fit: BoxFit.cover,
                 placeholder:
-                    AssetImage("assets/images/product-placeholder.png"),
+                    AssetImage("assets/images/loading_ring.gif"),
                 image: NetworkImage(
                   document['foto'][0],
                 ),
@@ -117,7 +117,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 5.0, bottom: 2.0),
               child: Text(
-                "Rp." + format.format(document['harga']).toString(),
+                "Rp." + format.format(document['harga']).toString() + " \\m3",
                 style: TextStyle(
                   fontSize: 15.0,
                   fontWeight: FontWeight.bold,
@@ -183,6 +183,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.red)));
             } else {
+              Text("Product");
               return GridView.builder(
                 padding: const EdgeInsets.all(10.0),
                 itemCount: snapshot.data.documents.length,

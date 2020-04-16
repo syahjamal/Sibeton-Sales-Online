@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'products_overview_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import 'products_overview_screen.dart';
 
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
@@ -77,14 +77,22 @@ class AuthCard extends StatefulWidget {
   const AuthCard({
     Key key,
   }) : super(key: key);
+  
 
   @override
   _AuthCardState createState() => _AuthCardState();
 }
 
 class _AuthCardState extends State<AuthCard>
+
+
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  
+  //Google Sign In
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
@@ -209,10 +217,8 @@ class _AuthCardState extends State<AuthCard>
     }
   }
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<String> signInWithGoogle() async {
+  Future<String> loginWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
@@ -231,8 +237,10 @@ class _AuthCardState extends State<AuthCard>
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
 
-    return 'signInWithGoogle succeeded: $user';
+    return 'loginWithGoogle succeeded: $user';
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -349,8 +357,8 @@ class _AuthCardState extends State<AuthCard>
   Widget _signInButton() {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () {
-                    signInWithGoogle().whenComplete(() {
+       onPressed: () {
+                    loginWithGoogle().whenComplete(() {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) {

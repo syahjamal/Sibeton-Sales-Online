@@ -185,7 +185,7 @@ class _DetailProdukState extends State<DetailProduk> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 10.0),
                         child: Text(
-                          "Rp." + format.format(document['harga']).toString(),
+                          "Rp." + format.format(document['harga']).toString() + " \\m3",
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -267,7 +267,7 @@ class _DetailProdukState extends State<DetailProduk> {
                                   ),
                                 ),
                                 Text(
-                                  'minimal 1',
+                                  'minimal 3 m3',
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey[700],

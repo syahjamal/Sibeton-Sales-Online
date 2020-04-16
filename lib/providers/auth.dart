@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecommerce/constants.dart';
 import 'package:flutter_ecommerce/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_ecommerce/utils/preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 PreferenceUtil appData = PreferenceUtil();
 
 class Auth with ChangeNotifier {
+
   String _token;
   DateTime _expiryDate;
   String _userId;
@@ -188,6 +190,10 @@ class Auth with ChangeNotifier {
 
     return true;
   }
+
+
+
+
 
   Future logOut() async {
     _token = null;
