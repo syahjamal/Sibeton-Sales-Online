@@ -134,7 +134,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' Sibeton Online Sales '),
+        automaticallyImplyLeading: false,
+        title: Image.asset('assets/Sibeton_logo.png', scale: 17,),
         actions: <Widget>[
           Row(
             children: <Widget>[

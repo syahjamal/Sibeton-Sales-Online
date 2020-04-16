@@ -33,8 +33,8 @@ dependencies:
   cloud_firestore: ^0.12.9
   firebase_storage: ^3.1.1 # foto dan penyimpanan
   carousel_slider: ^1.3.0 # Carousel
-
-
+  firebase_auth: ^0.16.0
+  google_sign_in: ^4.4.1
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +59,8 @@ flutter:
   assets:
     - assets/images/aditia.png
     - assets/images/product-placeholder.png
+    - assets/google_logo.png
+    - assets/Sibeton_logo.png
 
  
 
