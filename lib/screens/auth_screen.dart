@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'products_overview_screen.dart';
 
 import '../providers/auth.dart';
 import '../models/http_exception.dart';
@@ -10,6 +13,7 @@ enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatelessWidget {
   static const routeName = '/auth';
+  
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +49,16 @@ class AuthScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  // Flexible(
-                  //   child: Container(
-                  //     margin: EdgeInsets.only(bottom: 20.0),
-                  //     padding:
-                  //         EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
-                  //     transform: Matrix4.rotationZ(0 * pi / 180)
-                  //       ..translate(-10.0),
-                  //     // ..translate(-10.0),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(20),
-                  //       color: Colors.lightGreen.shade800,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           blurRadius: 8,
-                  //           color: Colors.black26,
-                  //           offset: Offset(0, 2),
-                  //         )
-                  //       ],
-                  //     ),
-                  //     child: Text(
-                  //       ' Sibeton ',
-                  //       style: TextStyle(
-                  //         color: Theme.of(context).accentTextTheme.title.color,
-                  //         fontSize: 50,
-                  //         fontFamily: 'Anton',
-                  //         fontWeight: FontWeight.normal,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      // padding:
+                      //     EdgeInsets.symmetric(vertical: 8.0, horizontal: 100.0),
+                      transform: Matrix4.rotationZ(0 * pi / 180)
+                        ..translate(-10.0),
+                      child: Image.asset('assets/Sibeton_logo.png', width: 320, height: 230 ),
+                    ),
+                  ),
                   Flexible(
                     flex: deviceSize.width > 600 ? 2 : 1,
                     child: AuthCard(),
@@ -93,14 +77,22 @@ class AuthCard extends StatefulWidget {
   const AuthCard({
     Key key,
   }) : super(key: key);
+  
 
   @override
   _AuthCardState createState() => _AuthCardState();
 }
 
 class _AuthCardState extends State<AuthCard>
+
+
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  
+  //Google Sign In
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
@@ -225,6 +217,31 @@ class _AuthCardState extends State<AuthCard>
     }
   }
 
+
+  Future<String> loginWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _auth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    return 'loginWithGoogle succeeded: $user';
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -236,11 +253,11 @@ class _AuthCardState extends State<AuthCard>
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 320 : 330,
         // height: _heightAnimation.value.height,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-        width: deviceSize.width * 0.75,
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 330),
+        width: deviceSize.width * 0.80,
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -319,15 +336,59 @@ class _AuthCardState extends State<AuthCard>
                   ),
                 FlatButton(
                   child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} ACCOUNT'),
                   onPressed: _switchAuthMode,
                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   textColor: Theme.of(context).primaryColor,
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                _signInButton(),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+       onPressed: () {
+                    loginWithGoogle().whenComplete(() {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductsOverviewScreen();
+                          },
+                        ),
+                      );
+                    });
+                  },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );
