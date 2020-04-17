@@ -256,7 +256,6 @@ class _DetailProdukState extends State<DetailProduk> {
           builder: (context, snapshot) {
             var document = snapshot.data;
             // fotoProduk = document['foto'];
-
             if (!snapshot.hasData) {
               return Center(
                   child: CircularProgressIndicator(
