@@ -96,7 +96,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               child: FadeInImage(
                 fit: BoxFit.cover,
                 placeholder:
-                    AssetImage("assets/images/product-placeholder.png"),
+                    AssetImage("assets/images/background.png"),
                 image: NetworkImage(
                   document['foto'][0],
                 ),
@@ -149,7 +149,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   child: IconButton(
                       icon: Icon(Icons.shopping_cart),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(CartScreen.routeName);
+                        Navigator.of(context).pushNamed('/keranjang');
                       }),
                 ),
               ),
@@ -165,7 +165,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   child: IconButton(
                       icon: Icon(Icons.history),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(CartScreen.routeName);
+                        Navigator.of(context).pushNamed('/history');
                       }),
                 ),
               ),

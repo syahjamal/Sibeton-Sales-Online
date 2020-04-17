@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_ecommerce/utils/loading.dart';
+import 'package:flutter_ecommerce/utils/preferences.dart';
 
 class DetailProduk extends StatefulWidget {
   DetailProduk({this.productId});
@@ -10,12 +12,19 @@ class DetailProduk extends StatefulWidget {
   _DetailProdukState createState() => _DetailProdukState();
 }
 
+PreferenceUtil appData = new PreferenceUtil();
+
 class _DetailProdukState extends State<DetailProduk> {
   final format = new NumberFormat("#,###");
   int current = 0, index = 0;
-  String namaProduk = '', deskripsiProduk = '';
+  String namaProduk = '', deskripsiProduk = '', userId = '', email = '';
   List fotoProduk;
-  var hargaProduk;
+  int hargaProduk = 0, hargaGetTotalProduk;
+  List<Map> shoppingItems;
+  List<Map> getShoppingItems;
+  List<Map> postShoppingItems;
+  List<dynamic> checkIdProduk;
+  bool checkBasketUser = true;
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -25,15 +34,42 @@ class _DetailProdukState extends State<DetailProduk> {
     return result;
   }
 
+  outFocus() {
+    FocusScope.of(context).requestFocus(FocusNode());
+    SibWidget.loadingPageIndicator(context: context);
+  }
+
   getData() async {
     Firestore.instance
         .collection('products')
         .document(widget.productId)
         .get()
         .then((onValue) {
-      namaProduk = onValue.data['nama'];
-      deskripsiProduk = onValue.data['deskripsi'];
-      hargaProduk = onValue.data['harga'];
+      setState(() {
+        shoppingItems = [
+          {
+            'created_at_item': DateTime.now(),
+            'id_produk': widget.productId,
+            'foto': onValue.data['foto'][0],
+            'nama': onValue.data['nama'],
+            'harga': onValue.data['harga'],
+            'jumlah_pesanan': 1,
+            'harga_total_item': onValue.data['harga'],
+          }
+        ];
+        hargaProduk = onValue.data['harga'];
+      });
+    });
+    appData.getVariable("user_id").then((result) {
+      setState(() {
+        userId = result;
+        checkBasket();
+      });
+    });
+    appData.getVariable("email").then((result) {
+      setState(() {
+        email = result;
+      });
     });
   }
 
@@ -43,30 +79,165 @@ class _DetailProdukState extends State<DetailProduk> {
 
   void initState() {
     super.initState();
-    // assignDataToVar();
+    assignDataToVar();
+  }
+
+  addToBaskets() {
+    Firestore.instance
+        .collection('baskets')
+        .document('BASKET' + userId)
+        .setData({
+      'user_id': userId,
+      'created_at': DateTime.now(),
+      'email': email,
+      'harga_total': hargaProduk,
+      'status_basket': "ada",
+      'item_pesanan': shoppingItems,
+    }).whenComplete(() {
+      Navigator.of(context).pop();
+    });
+  }
+
+  updateBasket() {
+    bool idProduk = false;
+    int indexIdproduk;
+    for (int i = 0; i < checkIdProduk.length; i++) {
+      if (checkIdProduk[i]['id_produk'] == widget.productId) {
+        idProduk = true;
+        indexIdproduk = i;
+      }
+    }
+
+    if (idProduk == false) {
+      // jika id_produk belum ada
+      int hargaTot;
+      hargaTot = hargaGetTotalProduk + hargaProduk;
+      Firestore.instance
+          .collection('baskets')
+          .document('BASKET' + userId)
+          .updateData({
+        'harga_total': hargaTot,
+        'item_pesanan': FieldValue.arrayUnion(shoppingItems),
+      }).whenComplete(() {
+        Navigator.of(context).pop();
+      });
+    } else {
+      // jika id_produk sudah ada dan otomatis harus nambah
+      int hargaTot, hargaTotItem, jumlahPesanan;
+      hargaTotItem =
+          checkIdProduk[indexIdproduk]['harga_total_item'] + hargaProduk;
+      hargaTot = hargaGetTotalProduk + hargaProduk;
+      jumlahPesanan = checkIdProduk[indexIdproduk]['jumlah_pesanan'] + 1;
+      getShoppingItems = [
+        {
+          'created_at_item': checkIdProduk[indexIdproduk]['created_at_item'],
+          'id_produk': checkIdProduk[indexIdproduk]['id_produk'],
+          'foto': checkIdProduk[indexIdproduk]['foto'],
+          'nama': checkIdProduk[indexIdproduk]['nama'],
+          'harga': checkIdProduk[indexIdproduk]['harga'],
+          'jumlah_pesanan': checkIdProduk[indexIdproduk]['jumlah_pesanan'],
+          'harga_total_item': checkIdProduk[indexIdproduk]['harga_total_item'],
+        }
+      ];
+      postShoppingItems = [
+        {
+          'created_at_item': checkIdProduk[indexIdproduk]['created_at_item'],
+          'id_produk': checkIdProduk[indexIdproduk]['id_produk'],
+          'foto': checkIdProduk[indexIdproduk]['foto'],
+          'nama': checkIdProduk[indexIdproduk]['nama'],
+          'harga': checkIdProduk[indexIdproduk]['harga'],
+          'jumlah_pesanan': jumlahPesanan,
+          'harga_total_item': hargaTotItem,
+        }
+      ];
+
+      Firestore.instance
+          .collection('baskets')
+          .document('BASKET' + userId)
+          .updateData({
+        'item_pesanan': FieldValue.arrayRemove(getShoppingItems),
+      });
+      Firestore.instance
+          .collection('baskets')
+          .document('BASKET' + userId)
+          .updateData({
+        'harga_total': hargaTot,
+        'item_pesanan': FieldValue.arrayUnion(postShoppingItems),
+      }).whenComplete(() {
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
+  checkBasket() {
+    Firestore.instance
+        .collection('baskets')
+        .document('BASKET' + userId)
+        .get()
+        .then((onValue) {
+      if (onValue.data.length > 0) {
+        setState(() {
+          checkBasketUser = false;
+          checkIdProduk = onValue.data['item_pesanan'];
+          hargaGetTotalProduk = onValue.data['harga_total'];
+        });
+      }
+    }).catchError((e) {
+      print(e);
+    });
   }
 
   Widget _showButton() {
     return new Padding(
       padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      child: Container(
-        height: 45,
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-            elevation: 10.0,
-            //color: Color(0xFF43A047),
-            color: Colors.red,
-            textColor: Colors.white,
-            child: Center(
-              child: Text('Tambah Ke Keranjang',
-                  textAlign: TextAlign.center,
-                  style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-            ),
-            onPressed: () {
-              //create();
-            },
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(10.0))),
+      child: Row(
+        children: <Widget>[
+          Container(
+            height: 45,
+            width: (MediaQuery.of(context).size.width * 0.5) - 20.0,
+            child: RaisedButton(
+                elevation: 10.0,
+                color: Colors.white,
+                textColor: Colors.white,
+                child: Center(
+                  child: Text('Check',
+                      textAlign: TextAlign.center,
+                      style: new TextStyle(fontSize: 18.0, color: Colors.red)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/keranjang');
+                },
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0))),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: 10.0),
+            height: 45,
+            width: (MediaQuery.of(context).size.width * 0.5) - 20.0,
+            child: RaisedButton(
+                elevation: 10.0,
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Center(
+                  child: Text('+ Keranjang',
+                      textAlign: TextAlign.center,
+                      style:
+                          new TextStyle(fontSize: 18.0, color: Colors.white)),
+                ),
+                onPressed: () {
+                  outFocus();
+
+                  if (checkBasketUser == true) {
+                    addToBaskets();
+                  } else {
+                    checkBasket();
+                    updateBasket();
+                  }
+                },
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0))),
+          ),
+        ],
       ),
     );
   }
