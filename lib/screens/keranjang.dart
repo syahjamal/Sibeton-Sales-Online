@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_ecommerce/utils/loading.dart';
+import 'package:flutter_ecommerce/screens/keranjang_pengiriman.dart';
 import 'package:flutter_ecommerce/utils/preferences.dart';
 
 class Keranjang extends StatefulWidget {
@@ -28,20 +28,6 @@ class _KeranjangState extends State<Keranjang> {
       });
     });
   }
-
-  // getProduk(userId) async {
-  //   Firestore.instance
-  //       .collection('baskets')
-  //       .document('BASKET' + userId)
-  //       .get()
-  //       .then((onValue) {
-  //     setState(() {
-  //       getItemPesanan = onValue.data['item_pesanan'];
-  //     });
-  //   }).catchError((e) {
-  //     print(e);
-  //   });
-  // }
 
   searchItemPesanan(idProduk, jumlahPemesanan, totalHargaItem) {
     for (int i = 0; i < getItemPesanan.length; i++) {
@@ -76,8 +62,8 @@ class _KeranjangState extends State<Keranjang> {
     }
   }
 
-  updateTombolAdd(
-      String idProduk, int jumlahPemesanan, int totalHargaItem) async {
+  updateTombolAdd(String idProduk, int jumlahPemesanan, int totalHargaItem,
+      int totalHarga) async {
     searchItemPesanan(idProduk, jumlahPemesanan, totalHargaItem);
     Firestore.instance
         .collection('baskets')
@@ -89,12 +75,13 @@ class _KeranjangState extends State<Keranjang> {
         .collection('baskets')
         .document('BASKET' + userId)
         .updateData({
+      'harga_total': FieldValue.increment(totalHarga),
       'item_pesanan': FieldValue.arrayUnion(postShoppingItems),
     }).whenComplete(() {});
   }
 
-  updateTombolMin(
-      String idProduk, int jumlahPemesanan, int totalHargaItem) async {
+  updateTombolMin(String idProduk, int jumlahPemesanan, int totalHargaItem,
+      int totalHarga) async {
     searchItemPesanan(idProduk, jumlahPemesanan, totalHargaItem);
     Firestore.instance
         .collection('baskets')
@@ -106,11 +93,12 @@ class _KeranjangState extends State<Keranjang> {
         .collection('baskets')
         .document('BASKET' + userId)
         .updateData({
+      'harga_total': FieldValue.increment(-totalHarga),
       'item_pesanan': FieldValue.arrayUnion(postShoppingItems),
     }).whenComplete(() {});
   }
 
-  deleteKeranjang(String idProduk) {
+  deleteKeranjang(String idProduk, int totalHarga) {
     for (int i = 0; i < getItemPesanan.length; i++) {
       if (getItemPesanan[i]['id_produk'] == idProduk) {
         getShoppingItems = [
@@ -129,6 +117,7 @@ class _KeranjangState extends State<Keranjang> {
             .collection('baskets')
             .document('BASKET' + userId)
             .updateData({
+          'harga_total': FieldValue.increment(-totalHarga),
           'item_pesanan': FieldValue.arrayRemove(getShoppingItems),
         });
       }
@@ -255,7 +244,6 @@ class _KeranjangState extends State<Keranjang> {
                 temp = totalHargaBeli +
                     document['item_pesanan'][i]['harga_total_item'];
                 totalHargaBeli = temp;
-                print(document['item_pesanan'][i]['harga_total_item']);
               }
             }
             return new Padding(
@@ -294,7 +282,7 @@ class _KeranjangState extends State<Keranjang> {
                     width: (MediaQuery.of(context).size.width * 0.5) - 20.0,
                     child: RaisedButton(
                         elevation: 10.0,
-                        color: Colors.red,
+                        color: totalHargaBeli > 0 ? Colors.red : Colors.grey[500],
                         textColor: Colors.white,
                         child: Center(
                           child: Text('Beli',
@@ -302,7 +290,17 @@ class _KeranjangState extends State<Keranjang> {
                               style: new TextStyle(
                                   fontSize: 18.0, color: Colors.white)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          if (totalHargaBeli > 0) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => KeranjangPengiriman(
+                                  hargaTotal: totalHargaBeli,
+                                ),
+                              ),
+                            );
+                          }
+                        },
                         shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(10.0))),
                   ),
@@ -451,7 +449,8 @@ class _KeranjangState extends State<Keranjang> {
               GestureDetector(
                 onTap: () {
                   // buat delete pake function remove
-                  deleteKeranjang(document['id_produk']);
+                  deleteKeranjang(
+                      document['id_produk'], document['harga_total_item']);
                 },
                 child: Container(
                   height: 30,
@@ -473,7 +472,8 @@ class _KeranjangState extends State<Keranjang> {
                     int add = int.tryParse(jumlahController.text) - 1;
                     int totalHargaItem =
                         document['harga_total_item'] - document['harga'];
-                    updateTombolMin(document['id_produk'], add, totalHargaItem);
+                    updateTombolMin(document['id_produk'], add, totalHargaItem,
+                        document['harga']);
                   }
                 },
                 child: Container(
@@ -515,7 +515,8 @@ class _KeranjangState extends State<Keranjang> {
                   int add = int.tryParse(jumlahController.text) + 1;
                   int totalHargaItem =
                       document['harga_total_item'] + document['harga'];
-                  updateTombolAdd(document['id_produk'], add, totalHargaItem);
+                  updateTombolAdd(document['id_produk'], add, totalHargaItem,
+                      document['harga']);
                 },
                 child: Container(
                   height: 30,
