@@ -55,6 +55,7 @@ class _DetailProdukState extends State<DetailProduk> {
             'harga': onValue.data['harga'],
             'jumlah_pesanan': 1,
             'harga_total_item': onValue.data['harga'],
+            'status_checkbox': true
           }
         ];
         hargaProduk = onValue.data['harga'];
@@ -137,6 +138,7 @@ class _DetailProdukState extends State<DetailProduk> {
           'harga': checkIdProduk[indexIdproduk]['harga'],
           'jumlah_pesanan': checkIdProduk[indexIdproduk]['jumlah_pesanan'],
           'harga_total_item': checkIdProduk[indexIdproduk]['harga_total_item'],
+          'status_checkbox': checkIdProduk[indexIdproduk]['status_checkbox'],
         }
       ];
       postShoppingItems = [
@@ -148,6 +150,7 @@ class _DetailProdukState extends State<DetailProduk> {
           'harga': checkIdProduk[indexIdproduk]['harga'],
           'jumlah_pesanan': jumlahPesanan,
           'harga_total_item': hargaTotItem,
+          'status_checkbox': true,
         }
       ];
 
@@ -355,7 +358,9 @@ class _DetailProdukState extends State<DetailProduk> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12.0, 0, 12.0, 10.0),
                         child: Text(
-                          "Rp." + format.format(document['harga']).toString() + " \\m3",
+                          "Rp." +
+                              format.format(document['harga']).toString() +
+                              " \\m3",
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
