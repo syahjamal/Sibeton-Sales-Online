@@ -37,6 +37,7 @@ dependencies:
   flutter_spinkit:
   firebase_auth: ^0.14.0+5
   google_sign_in: ^4.4.1
+  screen_utils: ^0.0.1
 
 
 dev_dependencies:
