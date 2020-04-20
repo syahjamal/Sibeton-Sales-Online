@@ -1,4 +1,0 @@
-#Thu Apr 16 19:40:16 ICT 2020
-base.0=D\:\\Semen Indonesia Beton\\Clone\\flutter-ecommerce\\build\\app\\intermediates\\transforms\\r8\\release\\0
-path.0=classes.dex
-renamed.0=classes.dex
