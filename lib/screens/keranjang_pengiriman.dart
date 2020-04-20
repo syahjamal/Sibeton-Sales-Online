@@ -72,6 +72,7 @@ class _KeranjangPengirimanState extends State<KeranjangPengiriman> {
         'nomor_handphone': nomorHandphoneController.text,
         'alamat': alamatController.text,
       }).whenComplete(() {
+        // pindah layout
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
