@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   google_sign_in: ^4.4.1
   screen_utils: ^0.0.1
+  flutter_html: ^0.11.0 # HTML
 
 
 dev_dependencies:
@@ -63,6 +64,8 @@ flutter:
   assets:
     - assets/images/product-placeholder.png
     - assets/images/background.png
+    - assets/images/bni.png
+    - assets/images/bri.png
     - assets/google_logo.png
     - assets/Sibeton_logo.png
     - assets/images/loading_ring.gif

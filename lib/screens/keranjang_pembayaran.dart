@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/utils/screenutil.dart';
-import 'bukti_pembayaran.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_ecommerce/models/list_bank.dart';
+import 'package:flutter_ecommerce/screens/keranjang_bayar.dart';
 
 class KeranjangPembayaran extends StatefulWidget {
   KeranjangPembayaran({this.hargaTotal});
@@ -10,220 +12,175 @@ class KeranjangPembayaran extends StatefulWidget {
 }
 
 class _KeranjangPembayaranState extends State<KeranjangPembayaran> {
+  final format = new NumberFormat("#,###");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pembayaran'),
       ),
-      body: Container(
-        padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(55)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Toko",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'PT-Sans-Regular',
-                  fontSize: ScreenUtil.getInstance().setSp(50),
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                  bottom: ScreenUtil.getInstance().setWidth(50),
-                  top: ScreenUtil.getInstance().setWidth(20)),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black26, width: 1))),
-              child: Text("Toko Tani Karya",
-                  style: TextStyle(
-                      fontFamily: 'PT-Sans-Regular',
-                      fontSize: ScreenUtil.getInstance().setSp(50),
-                      letterSpacing: 0.5)),
-            ),
-            Text("Faktur yang akan dibayar",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'PT-Sans-Regular',
-                  fontSize: ScreenUtil.getInstance().setSp(50),
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                bottom: ScreenUtil.getInstance().setWidth(50),
-                top: ScreenUtil.getInstance().setWidth(20),
-              ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black26, width: 1))),
-              child: Text("INV-DGW-0307184123757",
-                  style: TextStyle(
-                      fontFamily: 'PT-Sans-Regular',
-                      fontSize: ScreenUtil.getInstance().setSp(50),
-                      letterSpacing: 0.5)),
-            ),
-            Text("Jumlah Faktur yang akan dibayar",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'PT-Sans-Regular',
-                  fontSize: ScreenUtil.getInstance().setSp(50),
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                bottom: ScreenUtil.getInstance().setWidth(50),
-                top: ScreenUtil.getInstance().setWidth(20),
-              ),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black26, width: 1))),
-              child: Text("Rp 2.000.000",
-                  style: TextStyle(
-                      fontFamily: 'PT-Sans-Regular',
-                      fontSize: ScreenUtil.getInstance().setSp(50),
-                      letterSpacing: 0.5)),
-            ),
-            Text("Jenis Pembayaran",
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'PT-Sans-Regular',
-                  fontSize: ScreenUtil.getInstance().setSp(50),
-                )),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                bottom: ScreenUtil.getInstance().setWidth(50),
-                top: ScreenUtil.getInstance().setWidth(20),
-              ),
-              margin: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).size.width / 4),
-              decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Colors.black26, width: 1))),
-              child: Text("Transfer",
-                  style: TextStyle(
-                      fontFamily: 'PT-Sans-Regular',
-                      fontSize: ScreenUtil.getInstance().setSp(50),
-                      letterSpacing: 0.5)),
-            ),
-            Center(
-              child: Container(
-                margin: EdgeInsets.only(
-                    top: ScreenUtil.getInstance().setWidth(10),
-                    bottom: ScreenUtil.getInstance().setWidth(10)),
-                width: MediaQuery.of(context).size.width / 1.10,
-                child: MaterialButton(
-                  padding: EdgeInsets.only(
-                      top: ScreenUtil.getInstance().setWidth(40),
-                      bottom: ScreenUtil.getInstance().setWidth(40)),
-                  shape: StadiumBorder(),
-                  color: Colors.green,
-                  child: Text(
-                    "KONFIRMASI PEMBAYARAN",
-                    style: TextStyle(
-                        fontFamily: 'PT-Sans-Regular',
-                        letterSpacing: 0.5,
-                        color: Colors.white,
-                        fontSize: ScreenUtil.getInstance().setSp(50)),
-                  ),
-                  onPressed: () => _showAlert(),
+      body: ListView(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 0.0),
+                      child: Text(
+                        "Ringkasan Pembayaran",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(
+                                "Total Tagihan",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(
+                                "Rp." +
+                                    format.format(widget.hargaTotal).toString(),
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(
+                                "Biaya Layanan",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              child: Text(
+                                "Rp.-",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black54,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Center(
-              child: FlatButton(
-                child: Text(
-                  "BATALKAN",
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontFamily: 'PT-Sans-Regular',
-                      letterSpacing: 0.5,
-                      fontSize: ScreenUtil.getInstance().setSp(55)),
-                ),
-                onPressed: () {},
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
-  void _showAlert() {
-    AlertDialog alertDialog = new AlertDialog(
-      backgroundColor: Colors.transparent,
-      contentPadding: EdgeInsets.all(0),
-      content: new Container(
-        decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(ScreenUtil.getInstance().setWidth(40)),
-            color: Colors.white),
-        height: MediaQuery.of(context).size.height / 1.7,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-                height: MediaQuery.of(context).size.height / 4,
-                child:
-                    new Image.asset("assets/images/pembayaran_berhasil.png")),
-            Padding(
-              padding:
-                  EdgeInsets.only(top: ScreenUtil.getInstance().setWidth(50)),
-              child: new Text(
-                "Terima Kasih!",
-                style: TextStyle(
-                    fontFamily: 'PT-Sans-Bold',
-                    color: Colors.red,
-                    fontSize: ScreenUtil.getInstance().setSp(70)),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(ScreenUtil.getInstance().setWidth(20)),
-              child: new Text(
-                "Pembayaran Anda Telah di Proses",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'PT-Sans-Regular',
-                    fontSize: ScreenUtil.getInstance().setSp(50)),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                  top: ScreenUtil.getInstance().setWidth(50),
-                  bottom: ScreenUtil.getInstance().setWidth(10)),
-              width: MediaQuery.of(context).size.width / 2,
-              child: MaterialButton(
-                padding: EdgeInsets.only(
-                    top: ScreenUtil.getInstance().setWidth(30),
-                    bottom: ScreenUtil.getInstance().setWidth(30)),
-                shape: StadiumBorder(),
-                color: Colors.green,
+              // metode pemabyaran
+              Padding(
+                padding:
+                    const EdgeInsets.only(bottom: 5.0, left: 12.0, right: 12.0),
                 child: Text(
-                  "SELANJUTNYA",
+                  "Metode Pembayaran",
                   style: TextStyle(
-                      fontFamily: 'PT-Sans-Regular',
-                      letterSpacing: 0.5,
-                      color: Colors.white,
-                      fontSize: ScreenUtil.getInstance().setSp(50)),
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BuktiPembayaran()));
-                },
               ),
-            ),
-          ],
-        ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 2.0, bottom: 10.0, left: 12.0, right: 12.0),
+                child: Text(
+                  "Transfer Bank (Verifikasi Manual)",
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              // List Bank
+              Column(
+                children: List.generate(listBank.length, (i) {
+                  return Column(
+                    children: <Widget>[
+                      ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => KeranjangBayar(
+                                hargaTotal: widget.hargaTotal,
+                                namaBank: listBank[i]['nama'],
+                                logoBank: listBank[i]['logo'],
+                                noRek: listBank[i]['norek'],
+                              ),
+                            ),
+                          );
+                        },
+                        leading: Image.asset(
+                          listBank[i]['logo'],
+                          width: 40,
+                          height: 40,
+                        ),
+                        title: Text(listBank[i]['nama']),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          size: 15.0,
+                          color: Colors.grey[500],
+                        ),
+                      ),
+                      Divider(
+                        height: 0.0,
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-    showDialog(
-      context: context,
-      child: alertDialog,
     );
   }
 }
