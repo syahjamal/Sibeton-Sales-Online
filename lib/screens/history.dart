@@ -12,170 +12,102 @@ class _HistoryState extends State<History> {
       appBar: AppBar(
         title: Text('Riwayat'),
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-        height: 220,
-        width: double.maxFinite,
-        child: Card(
-          elevation: 5,
-          child: Padding(
-            padding: EdgeInsets.all(7),
-            child: Stack(children: <Widget>[
-              Align(
-                alignment: Alignment.centerRight,
-                child: Stack(
+      // Kayanya harus pake listview builder
+      body: ListView(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      offset: const Offset(0.0, 5.0),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white,
+                ),
+                child: Container(
+                  color: Colors.green[200],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(12.0, 10.0, 12.0, 3.0),
+                        child: Text(
+                          " Pesanan Selesai ",
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(12.0, 2.0, 12.0, 20.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10.0,
+                      offset: const Offset(0.0, 10.0),
+                    ),
+                  ],
+                  color: Colors.white,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    ListTile(
+                      leading: Text("Tanggal Transaksi :"),
+                      title: Text("12/12/20"), //get data tanggal transaksi
+                    ),
+                    ListTile(
+                      leading: Text("Nomor Transaksi :"),
+                      title: Text("12345678910"), //get data nomor transaksi
+                    ),
+                    Divider(
+                      height: 0.0,
+                    ),
                     Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 5),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 15.0),
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, top: 5),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  children: <Widget>[
-                                                    cryptoIcon(),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    cryptoNameSymbol(),
-                                                    Spacer(),
-                                                    cryptoChange(),
-                                                    SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    changeIcon(),
-                                                    SizedBox(
-                                                      width: 20,
-                                                    )
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: <Widget>[
-                                                    cryptoAmount()
-                                                  ],
-                                                )
-                                              ],
-                                            ))
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ))
+                      padding: const EdgeInsets.fromLTRB(0.0, 12.0, 12.0, 20.0),
+                      //barang yang di pesan
+                      child: ListTile(
+                        leading: Image.asset(
+                            "assets/google_logo.png"), // Gambar product
+                        title: Text("ReadyMix"), //Nama Product
+                        subtitle: Text("Rp. 600.000"), // Harga satuan
+                      ),
+                    ),
+                    Divider(
+                      height: 0.0,
+                    ),
+                    ListTile(
+                      leading: Text("Total Pembelian :"),
+                      title: Text("12345678910"), //Total harga
+                    ),
                   ],
                 ),
-              )
-            ]),
+              ),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }
 }
-
-Widget cryptoIcon() {
-   return Padding(
-     padding: const EdgeInsets.only(left: 15.0),
-     child: Align(
-         alignment: Alignment.centerLeft,
-         child: Icon(
-           Icons.money_off,
-           color: Colors.amber,
-           size: 40,
-         )),
-   );
- }
- Widget cryptoNameSymbol() {
-   return Align(
-     alignment: Alignment.centerLeft,
-     child: RichText(
-       text: TextSpan(
-         text: 'Jumlah',
-         style: TextStyle(
-             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
-         children: <TextSpan>[
-           TextSpan(
-               text: '\nBTC',
-               style: TextStyle(
-                   color: Colors.grey,
-                   fontSize: 15,
-                   fontWeight: FontWeight.bold)),
-         ],
-       ),
-     ),
-   );
-  }
-Widget cryptoChange() {
-  return Align(
-    alignment: Alignment.topRight,
-    child: RichText(
-      text: TextSpan(
-        text: '+3.67%',
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.green, fontSize: 20),
-        children: <TextSpan>[
-        TextSpan(
-            text: '\n+202.835',
-            style: TextStyle(
-                color: Colors.green,
-                fontSize: 15,
-                fontWeight: FontWeight.bold)),
-      ],
-    ),
-  ),
-);
-}
-
-Widget changeIcon() {
-  return Align(
-      alignment: Alignment.topRight,
-      child: Icon(
-        Icons.arrow_drop_up,
-        color: Colors.green,
-        size: 30,
-      ));
-}
-Widget cryptoAmount() {
-  return Align(
-    alignment: Alignment.centerLeft,
-    child: Padding(
-      padding: const EdgeInsets.only(left: 20.0),
-      child: Row(
-        children: <Widget>[
-          RichText(
-            textAlign: TextAlign.left,
-            text: TextSpan(
-              text: '\n\$12.279',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 35,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                    text: '\n0.1349',
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
- }
