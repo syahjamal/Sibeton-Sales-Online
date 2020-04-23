@@ -2,10 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce/providers/cart.dart';
 import 'package:flutter_ecommerce/providers/products.dart';
-import 'package:flutter_ecommerce/screens/cart_screen.dart';
-import 'package:flutter_ecommerce/widgets/app_drawer.dart';
 import 'package:flutter_ecommerce/widgets/badge.dart';
-import 'package:flutter_ecommerce/widgets/products_grid.dart';
 import 'package:flutter_ecommerce/screens/detail_product.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ecommerce/utils/preferences.dart';
@@ -185,7 +182,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.red)));
             } else {
-              Text("Product");
               return GridView.builder(
                 padding: const EdgeInsets.all(10.0),
                 itemCount: snapshot.data.documents.length,
@@ -198,7 +194,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   mainAxisSpacing: 10,
                 ),
               );
-            }
+            } 
           }),
     );
   }
