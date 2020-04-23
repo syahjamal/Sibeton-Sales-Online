@@ -8,8 +8,9 @@ import 'package:flutter_ecommerce/models/list_bank.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class KeranjangBayar extends StatefulWidget {
-  KeranjangBayar({this.hargaTotal, this.namaBank, this.logoBank, this.noRek});
-  final hargaTotal, namaBank, logoBank, noRek;
+  KeranjangBayar(
+      {this.hargaTotal, this.namaBank, this.logoBank, this.noRek, this.owner});
+  final hargaTotal, namaBank, logoBank, noRek, owner;
   @override
   _KeranjangBayarState createState() => _KeranjangBayarState();
 }
@@ -71,9 +72,11 @@ class _KeranjangBayarState extends State<KeranjangBayar> {
     }
     order = [
       {
-        'orde_id': orderId,
+        'order_id': orderId,
         'nama_bank': widget.namaBank,
-        'norek_bak': widget.noRek,
+        'logo_bank': widget.logoBank,
+        'owner_bank': widget.owner,
+        'norek_bank': widget.noRek,
         'created_at_order': DateTime.now(),
         'nama': nama,
         'nomor_handphone': nomorHandphone,

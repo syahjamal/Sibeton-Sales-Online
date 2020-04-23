@@ -154,6 +154,7 @@ class _KeranjangPembayaranState extends State<KeranjangPembayaran> {
                                 namaBank: listBank[i]['nama'],
                                 logoBank: listBank[i]['logo'],
                                 noRek: listBank[i]['norek'],
+                                owner: listBank[i]['owner'],
                               ),
                             ),
                           );

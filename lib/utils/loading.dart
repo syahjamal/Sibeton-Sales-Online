@@ -6,6 +6,13 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_ecommerce/utils/screenutil.dart';
 
 class SibWidget {
+  static Widget sibDialogButton(
+      {String buttonText = '', Function onPressed}) {
+    return FlatButton(
+        child: Text(buttonText),
+        onPressed: onPressed != null ? onPressed : () {});
+  }
+
   static sibDialog(
       {@required BuildContext context,
       @required String title,
