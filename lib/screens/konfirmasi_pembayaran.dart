@@ -22,6 +22,7 @@ class KonfirmasiPembayaran extends StatefulWidget {
 }
 
 PreferenceUtil appData = new PreferenceUtil();
+int jumlahPembayaran;
 
 class _KonfirmasiPembayaranState extends State<KonfirmasiPembayaran> {
   final format = DateFormat("dd-MM-yyyy");
@@ -88,59 +89,60 @@ class _KonfirmasiPembayaranState extends State<KonfirmasiPembayaran> {
   }
 
   addData() async {
-    if (image != null) {
-      if (status == true) {
-        var iemge = img.decodeImage(image.readAsBytesSync());
-        thumbnail = img.copyResize(iemge, width: 360);
-        File thumbnel = image..writeAsBytesSync(img.encodePng(thumbnail));
-        kirimImage = thumbnel;
-      } else {
-        kirimImage = image;
-      }
-      String gambar = "konfirmasi-pembayarans/" + filename;
-      StorageReference ref = FirebaseStorage.instance.ref().child(gambar);
-      StorageUploadTask uploadTask = ref.putFile(kirimImage);
-
-      var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
-      url = downUrl.toString();
-      await Firestore.instance
-          .collection('verifikasi_pembayarans')
-          .document()
-          .setData({
-        'created_at': DateTime.now(),
-        'user_id': userId,
-        'order_id': widget.orderID,
-        'status': "konfirmasi",
-        'bank_tujuan': bankTujuan,
-        'nama_rekening': namaRekeningController.text ?? "",
-        'jumlah_pembayaran': int.tryParse(jumlahPembayaranController.text),
-        'tanggal_pembayaran': tglBayar,
-        'pesan_tambahan': pesanTambahanController.text ?? "",
-        'foto_pembayaran': url,
-      }).whenComplete(() {
-        Navigator.of(context).pop();
-        SibWidget.sibDialog(
-            context: context,
-            title: 'Berhasil Disimpan',
-            content: 'Perubahan berhasil disimpan',
-            buttons: <Widget>[
-              SibWidget.sibDialogButton(
-                  buttonText: 'Ok',
-                  onPressed: () async {
-                    // di pop dulu baru di push replacementNamed
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => KeranjangVerifikasiPembayaran(
-                          orderID: widget.orderID,
-                        ),
-                      ),
-                    );
-                  })
-            ]);
-      });
+    if (status == true) {
+      var iemge = img.decodeImage(image.readAsBytesSync());
+      thumbnail = img.copyResize(iemge, width: 360);
+      File thumbnel = image..writeAsBytesSync(img.encodePng(thumbnail));
+      kirimImage = thumbnel;
+    } else {
+      kirimImage = image;
     }
+    String gambar = "konfirmasi-pembayarans/" + filename;
+    StorageReference ref = FirebaseStorage.instance.ref().child(gambar);
+    StorageUploadTask uploadTask = ref.putFile(kirimImage);
+
+    var downUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    url = downUrl.toString();
+
+    print(jumlahPembayaran.toString());
+
+    await Firestore.instance
+        .collection('verifikasi_pembayarans')
+        .document()
+        .setData({
+      'created_at': DateTime.now(),
+      'user_id': userId,
+      'order_id': widget.orderID,
+      'status': "konfirmasi",
+      'bank_tujuan': bankTujuan,
+      'nama_rekening': namaRekeningController.text ?? "",
+      'jumlah_pembayaran': jumlahPembayaran,
+      'tanggal_pembayaran': tglBayar,
+      'pesan_tambahan': pesanTambahanController.text ?? "",
+      'foto_pembayaran': url,
+    }).whenComplete(() {
+      Navigator.of(context).pop();
+      SibWidget.sibDialog(
+          context: context,
+          title: 'Berhasil Disimpan',
+          content: 'Perubahan berhasil disimpan',
+          buttons: <Widget>[
+            SibWidget.sibDialogButton(
+                buttonText: 'Ok',
+                onPressed: () async {
+                  // di pop dulu baru di push replacementNamed
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => KeranjangVerifikasiPembayaran(
+                        orderID: widget.orderID,
+                      ),
+                    ),
+                  );
+                })
+          ]);
+    });
   }
 
   Widget titleInput(title) {
@@ -462,7 +464,7 @@ class _KonfirmasiPembayaranState extends State<KonfirmasiPembayaran> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       // ketika ada fungsi onsaved bisa langsung dipakai
-                      _formKey.currentState.save();
+                      // _formKey.currentState.save();
                       if (image != null) {
                         outFocus();
                         addData();
@@ -489,14 +491,14 @@ class CurrencyInputFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.selection.baseOffset == 0) {
-      print(true);
       return newValue;
     }
-    double value = double.parse(newValue.text);
 
+    double value = double.parse(newValue.text);
+    jumlahPembayaran = int.parse(newValue.text);
     final formatter = new NumberFormat("#,###");
 
-    String newText = "Rp. " + formatter.format(value);
+    String newText = formatter.format(value);
 
     return newValue.copyWith(
         text: newText,
