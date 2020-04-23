@@ -178,7 +178,7 @@ class _DetailProdukState extends State<DetailProduk> {
         .document('BASKET' + userId)
         .get()
         .then((onValue) {
-      if (onValue.data.length > 0) {
+      if (onValue.data != null) {
         setState(() {
           checkBasketUser = false;
           checkIdProduk = onValue.data['item_pesanan'];
